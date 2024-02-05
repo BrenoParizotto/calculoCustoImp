@@ -1,0 +1,186 @@
+Sub processar()
+Dim oc As String
+Dim nf As String
+Dim emp As String
+Dim despesa As String
+Dim projeto As String
+Dim invoice As String
+Dim produto As String
+Dim dolar As String
+Dim REPE As String
+Dim integ As Integer
+
+
+REPE = Range("AS4").Value
+If REPE > 0 Then
+integ = MsgBox("O.C. já lançada, deseja excluir o lançamento?", vbYesNo + vbCritical, "")
+If integ = vbYes Then
+Range("a4").Select
+Selection.Copy
+Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+Range("b2").Select
+Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        MsgBox "Número da O.C transferido para exclusão, para confirmar clique no botão.", vbInformation, ""
+Exit Sub
+End If
+Exit Sub
+End If
+
+oc = Range("a4").Value
+nf = Range("b4").Value
+emp = Range("c4").Value
+despesa = Range("d4").Value
+projeto = Range("e4").Value
+invoice = Range("f4").Value
+produto = Range("a8").Value
+dolar = Range("g4").Value
+
+If oc = "" Then
+MsgBox "Favor informar número da O.C.", vbExclamation, ""
+Range("a4").Select
+Exit Sub
+End If
+
+If nf = "" Then
+MsgBox "Favor informar número da NF.", vbExclamation, ""
+Range("b4").Select
+Exit Sub
+End If
+
+If emp = "" Then
+MsgBox "Favor informar empresa.", vbExclamation, ""
+Range("c4").Select
+Exit Sub
+End If
+
+If despesa = "" Then
+MsgBox "Favor informar valor da despesa de nacionalização.", vbExclamation, ""
+Range("d4").Select
+Exit Sub
+End If
+
+If projeto = "" Then
+MsgBox "Favor informar número do projeto.", vbExclamation, ""
+Range("e4").Select
+Exit Sub
+End If
+
+If invoice = "" Then
+MsgBox "Favor informar invoice.", vbExclamation, ""
+Range("f4").Select
+Exit Sub
+End If
+
+If produto = "" Then
+MsgBox "Informe o código ERP do produto.", vbExclamation, ""
+Range("a8").Select
+Exit Sub
+End If
+
+If dolar = "" Then
+MsgBox "Informe o a taxa do dólar.", vbExclamation, ""
+Range("g4").Select
+Exit Sub
+End If
+
+Dim resposta As Integer
+resposta = MsgBox("Deseja processar a O.C?", vbYesNo + vbInformation, "")
+If resposta = vbNo Then Exit Sub
+
+Dim numpro As String
+numpro = Range("t4").Value
+
+If numpro > 1 Then
+    Range("AV9").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    Sheets("DADOS O.C + PRODUTOS").Visible = True
+    Sheets("DADOS O.C + PRODUTOS").Select
+    Range("a1").Select
+        Selection.End(xlDown).Select
+ 
+ Selection.Offset(1, 0).Select
+ Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+ 
+ 
+ 
+    Sheets("INSERIR O.C").Select
+
+
+    Range("AU4").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Sheets("DADOS OC").Visible = True
+    Sheets("DADOS OC").Select
+    Range("a1").Select
+        Selection.End(xlDown).Select
+ 
+ Selection.Offset(1, 0).Select
+ Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+ 
+ 
+    Sheets("DADOS OC").Visible = False
+    Sheets("DADOS O.C + PRODUTOS").Visible = False
+    
+    Sheets("INSERIR O.C").Select
+    Range("A4").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.ClearContents
+     Range("A8:T95").Select
+    Selection.ClearContents
+    Range("A4").Select
+    
+    MsgBox "O.C. processada com sucesso!", vbInformation, ""
+
+Else
+
+Range("AV9").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Sheets("DADOS O.C + PRODUTOS").Visible = True
+    Sheets("DADOS O.C + PRODUTOS").Select
+    Range("a1").Select
+        Selection.End(xlDown).Select
+ 
+ Selection.Offset(1, 0).Select
+ Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+ 
+ 
+ 
+    Sheets("INSERIR O.C").Select
+
+
+    Range("AU4").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
+    Sheets("DADOS OC").Visible = True
+    Sheets("DADOS OC").Select
+    Range("a1").Select
+        Selection.End(xlDown).Select
+ 
+ Selection.Offset(1, 0).Select
+ Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+ 
+ 
+    Sheets("DADOS OC").Visible = False
+    Sheets("DADOS O.C + PRODUTOS").Visible = False
+    
+    Sheets("INSERIR O.C").Select
+    Range("A4").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.ClearContents
+     Range("A8:T95").Select
+    Selection.ClearContents
+    Range("A4").Select
+    
+    MsgBox "O.C. processada com sucesso!", vbInformation, ""
+
+End If
+
+End Sub
