@@ -1,0 +1,135 @@
+Sub ExcluirLinhasPorOrdemCompra()
+    Dim VALOR As String
+    Dim Planilha As Worksheet
+    Dim UltimaLinha As Long
+    Dim OrdemCompra As String
+    Dim Celula As Range
+    Dim RowsToDelete As Range
+    
+    VALOR = Range("B2").Value
+
+    Set Planilha = ThisWorkbook.Sheets("DADOS O.C + PRODUTOS")
+    
+    If VALOR = "" Then
+        MsgBox "Digite ou escolha uma O.C. válida para exclusão de lançamento!", vbExclamation, ""
+        Range("B2").Select
+        Exit Sub
+    End If
+
+    Dim repeat As String
+    repeat = Range("T2").Value
+    
+    If repeat = 0 Then
+        MsgBox "O.C. já excluída!", vbCritical, ""
+        Exit Sub
+    End If
+
+    Dim fodase As Integer
+    fodase = MsgBox("Confirma a exclusão de lançamento?", vbYesNo + vbExclamation, "")
+    
+    If fodase = vbNo Then
+        Exit Sub
+    End If
+
+    Call CopiarDados
+    
+    OrdemCompra = Range("B2").Value
+    
+    UltimaLinha = Planilha.Cells(Planilha.Rows.Count, "Y").End(xlUp).Row
+    
+    For Each Celula In Planilha.Range("Y2:Y" & UltimaLinha)
+        If Celula.Value = OrdemCompra Then
+            If RowsToDelete Is Nothing Then
+                Set RowsToDelete = Celula.EntireRow
+            Else
+                Set RowsToDelete = Union(RowsToDelete, Celula.EntireRow)
+            End If
+        End If
+    Next Celula
+    
+
+    If Not RowsToDelete Is Nothing Then
+        RowsToDelete.Delete
+    End If
+    
+    Sheets("INSERIR O.C").Select
+    Range("D4").Select
+    
+    MsgBox "O.C excluída com sucesso! Favor inserir novo valor de despesas para recálculo.", vbInformation, ""
+    
+
+End Sub
+
+
+Sub CopiarDados()
+
+Range("K2:M2").Select
+    Selection.Copy
+    Sheets("INSERIR O.C").Select
+    Range("A4").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+    Range("N2:P2").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Sheets("INSERIR O.C").Select
+    Range("E4").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+   
+
+Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+Dim itens As String
+itens = Range("T2").Value
+
+
+
+
+
+If itens < 2 Then
+
+Sheets("INSERIR O.C").Select
+Range("A8:S50").Select
+Selection.ClearContents
+
+Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+ Range("a5:s5").Select
+    Selection.Copy
+    Sheets("INSERIR O.C").Select
+    Range("A8").Select
+ Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+        
+Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+        
+        
+        
+Else
+
+Sheets("INSERIR O.C").Select
+Range("A8:S50").Select
+Selection.ClearContents
+
+Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+
+        Range("A5").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+    Sheets("INSERIR O.C").Select
+    Range("A8").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+        
+        Sheets("EXCLUSÃO DE O.C. PARA RECÁLCULO").Select
+        
+
+        
+End If
+
+End Sub
+
